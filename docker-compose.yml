@@ -1,0 +1,28 @@
+version: '3'
+services:
+  mongo-db:
+    container_name : database_container
+    image: mongo:latest
+    restart: always  
+    volumes:
+      - mongo_db:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+  
+  app:
+    build: .
+    ports:
+      - 8080:8080
+    env_file:
+      - .env
+    depends_on:
+      - mongo-db
+networks:
+  app-network:
+    driver: bridge
+
+  
+volumes:
+  mongo_db: {}
